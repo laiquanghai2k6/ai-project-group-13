@@ -60,16 +60,23 @@ class ValueIterationAgent(ValueEstimationAgent):
         self.runValueIteration()
 
     def runValueIteration(self):
-        "*** YOUR CODE HERE ***"
-        for i in range(self.iterations):
-            new_values = self.values.copy()
+
+        # Write value iteration code here
+        for _ in range(self.iterations):
+            newValues = util.Counter()
             for state in self.mdp.getStates():
                 if self.mdp.isTerminal(state):
+                    newValues[state] = 0
                     continue
-                actions = self.mdp.getPossibleActions(state)
-                q_values = [self.computeQValueFromValues(state, action) for action in actions]
-                new_values[state] = max(q_values)
-            self.values = new_values
+                
+                max_value = float('-inf')
+                for action in self.mdp.getPossibleActions(state):
+                    q_value = self.computeQValueFromValues(state, action)
+                    if q_value > max_value:
+                        max_value = q_value
+                if max_value != float('-inf'):
+                    newValues[state] = max_value
+            self.values = newValues
 
     def getValue(self, state):
         """
@@ -83,7 +90,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           Compute the Q-value of action in state from the
           value function stored in self.values.
         """
-        "*** YOUR CODE HERE ***"
+
         q_value = 0
         for nextState, prob in self.mdp.getTransitionStatesAndProbs(state, action):
             reward = self.mdp.getReward(state, action, nextState)
@@ -99,7 +106,7 @@ class ValueIterationAgent(ValueEstimationAgent):
           there are no legal actions, which is the case at the
           terminal state, you should return None.
         """
-        "*** YOUR CODE HERE ***"
+
         if self.mdp.isTerminal(state):
             return None
         
@@ -112,6 +119,7 @@ class ValueIterationAgent(ValueEstimationAgent):
             if q_val > max_q:
                 max_q = q_val
                 best_action = action
+
         return best_action
 
     def getPolicy(self, state):
