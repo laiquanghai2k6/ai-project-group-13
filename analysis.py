@@ -67,10 +67,9 @@ def question3e():
 
 
 def question7():
-    answerEpsilon = None
-    answerLearningRate = None
-    return answerEpsilon, answerLearningRate
-
+    return "NOT POSSIBLE"
+    
+    
 
 def question8():
     
